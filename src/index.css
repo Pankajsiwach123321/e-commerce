@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .hoverlinks {
+        @apply relative after:!absolute after:!bg-orange-500 after:!h-1 after:!w-full after:!duration-300 text-orange-500 duration-300 before:!opacity-100 after:!rounded-md after:!-bottom-0 after:!left-0 before:!translate-y-0 before:!duration-300 before:!absolute before:!w-full before:!h-full;
+    }
+
+    .Mainhover {
+        @apply relative after:absolute after:bg-white after:w-[200%] after:h-full after:left-[-300%] hover:after:left-[-45%] after:duration-300 after:bottom-0 overflow-hidden after:rounded-2xl after:skew-x-[60deg];
+    }
+
+    .row {
+        @apply flex flex-row flex-wrap -mx-3;
+    }
+    .navresponsive {
+        @apply max-sm:flex-col max-sm:justify-center max-sm:w-full max-sm:max-w-[475px] max-sm:min-h-full max-sm:fixed max-sm:bg-white max-sm:top-0 max-sm:z-[3] max-sm:opacity-100 max-sm:duration-300  max-sm:shadow-[0_0_20px_#000]
+    }
+}
