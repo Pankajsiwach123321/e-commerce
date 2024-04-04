@@ -45,7 +45,13 @@ const CartLayer = () => {
     setkidcart(updatedKidcart);
     setPrize(Prize - e.prize * e.qt);
   }
-
+  function setconfirms() {
+    if (CartItem.length > 0) {
+      setconfirm(true);
+    } else {
+      alert("please add itmes first");
+    }
+  }
   return (
     <div
       className={`${
@@ -115,8 +121,10 @@ const CartLayer = () => {
         <p className=" text-orange-500 text-2xl ">Total-Amount:{Prize}</p>
       </div>
       <button
-        onClick={() => setconfirm(true, setShow(false))}
-        className=" absolute  bottom-3 left-3 bg-white hover:bg-transparent  mt-3   px-4 py-1 text-orange-500 hover:text-white   border-white border duration-300 rounded-2xl text-xl font-medium font-mono"
+        onClick={() => setconfirms(setShow(false))}
+        className={` ${
+          Show ? "block" : "hidden"
+        } fixed  bottom-3 left-3 bg-white hover:bg-transparent  mt-3   px-4 py-1 text-orange-500 hover:text-white   border-white border duration-300 rounded-2xl text-xl font-medium font-mono`}
       >
         <span className=" block relative z-[1]">place-order</span>
       </button>

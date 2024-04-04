@@ -16,14 +16,23 @@ export const ContactUs = () => {
     confirm,
     setconfirm,
   } = useContext(CartContext);
+  const [fromdata, setFromdata] = React.useState({
+    name: "",
+    useremail: "",
+    message: "",
+  });
+  const [Fromerror, setFromerror] = React.useState({
+    name: "",
+    useremail: "",
+    message: "",
+  });
+  const inputCon = (e) => {
+    const { name, value } = e.target;
+    setFromdata({ ...fromdata, [name]: value });
+  };
   const sendEmail = (e) => {
     e.preventDefault();
-    setCartItem([]);
-    setmencart([]);
-    setkidcart([]);
-    setwomencart([]);
-    setpalceorder(false);
-    setPrize(0);
+
     const messageBody = CartItem.map((item) => {
       return `Item: ${item.brand}\nPrize: ${item.prize}\nQuantity: ${item.qt}\n\n`;
     }).join("");
@@ -33,21 +42,46 @@ export const ContactUs = () => {
     messageInput.name = "message";
     messageInput.value = messageBody;
     form.current.appendChild(messageInput);
-    emailjs
-      .sendForm(
-        "service_k2uzfhb",
-        "template_kv6d7xq",
-        form.current,
-        "qN_3TJV48NGiMwDpX"
-      )
-      .then(
-        () => {
-          console.log("SUCCESS!");
-        },
-        (error) => {
-          console.log("FAILED...", error);
-        }
-      );
+    const regex = {
+      name: /^[a-zA-Z\s]+$/,
+      email:
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      message: /^[a-zA-Z\s]+$/,
+    };
+    const error = {};
+    if (!regex.name.test(fromdata.name)) {
+      error.name = "invaild name";
+    }
+    if (!regex.email.test(fromdata.useremail)) {
+      error.useremail = "invaild email";
+    }
+    if (!regex.message.test(fromdata.message)) {
+      error.message = "message not be empty";
+    }
+    setFromerror(error);
+    if (Object.keys(error).length === 0) {
+      emailjs
+        .sendForm(
+          "service_k2uzfhb",
+          "template_kv6d7xq",
+          form.current,
+          "qN_3TJV48NGiMwDpX"
+        )
+        .then(
+          () => {
+            console.log("SUCCESS!");
+          },
+          (error) => {
+            console.log("FAILED...", error);
+          }
+        );
+      setCartItem([]);
+      setmencart([]);
+      setkidcart([]);
+      setwomencart([]);
+      setpalceorder(false);
+      setPrize(0);
+    }
   };
 
   return (
@@ -67,21 +101,39 @@ export const ContactUs = () => {
                 Name
               </label>
               <input
+                onChange={inputCon}
                 className="p-[18px] border-white rounded-xl border-2 bg-transparent outline-0  font-mono text-black placeholder:text-black text-xl w-full max-w-[400px]"
                 type="text"
                 name="name"
               />
+              {Fromerror.name && (
+                <p className=" text-red-700 text-base font-medium font-mono">
+                  {Fromerror.name}
+                </p>
+              )}
               <label>Email</label>
               <input
+                onChange={inputCon}
                 className="p-[18px] border-white rounded-xl border-2 bg-transparent outline-0  font-mono text-black placeholder:text-black text-xl w-full max-w-[400px]"
                 type="email"
                 name="useremail"
               />
+              {Fromerror.useremail && (
+                <p className=" text-red-700 text-base font-medium font-mono">
+                  {Fromerror.useremail}
+                </p>
+              )}
               <label>Message</label>
               <textarea
+                onChange={inputCon}
                 className="p-[18px] border-white rounded-xl border-2 bg-transparent outline-0  font-mono text-black placeholder:text-black text-xl w-full max-w-[400px]"
                 name="message"
               />
+              {Fromerror.message && (
+                <p className=" text-red-700 text-base font-medium font-mono">
+                  {Fromerror.message}
+                </p>
+              )}
               <input
                 className="p-[18px] cursor-pointer border-white rounded-xl border-2 bg-transparent outline-0  font-mono text-black placeholder:text-black text-xl w-full max-w-[400px]"
                 type="submit"
